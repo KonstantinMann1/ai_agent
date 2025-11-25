@@ -11,14 +11,12 @@ def get_file_content(working_directory, file_path):
         if not os.path.isfile(full_path):
             return f'Error: File not found or is not a regular file: "{file_path}"'
         
-        lines = []
-        file = open(full_path)
-        for line in file:
-            lines.append(line)
-        combined = "\n".join(lines)
-        if len(combined) > CHARACTER_LIMIT:
-            combined = combined[:CHARACTER_LIMIT] + f'[...File "{file_path}" truncated at 10000 characters]'
-        return "\n".join(lines)
+        file_content_string = ""
+        with open(full_path, "r") as f:
+            file_content_string = f.read(CHARACTER_LIMIT)
+            if len(f.read()) > len(file_content_string):
+                file_content_string = file_content_string + f'[...File "{file_path}" truncated at 10000 characters]'
+        return file_content_string
     except Exception as e:
         return f"Error: {e} happened!"
 
